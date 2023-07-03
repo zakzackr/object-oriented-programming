@@ -17,7 +17,6 @@ class Card{
     public String getCardString(){
         return this.suit + this.value + "(" + this.intValue + ")";
     }
-
 }
 
 class Deck{

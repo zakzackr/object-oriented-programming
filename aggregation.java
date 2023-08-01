@@ -1,11 +1,11 @@
-// association > aggregation > composition
-// 集約(aggregation)は、Person classがその状態の一部としてWallet classを含む形の関連を示す
-// Person オブジェクトは Wallet の所有者で、Person は Wallet を集約し、Wallet は Person オブジェクトによって集約される
-// しかし、Personオブジェクトがメモリから削除されても、Walletはメモリ上に独立して存在することができる
+// association > aggregation (weak Association) > composition (strong Association)
+// Wallet, AddressはあるPersonオブジェクトが削除されても、他のPersonオブジェクトによって所有されることができる（集約）
+// 集約: Personが消滅されてもWalletが他のスコープに存在し続けることができる場合
+// 集約の場合は別の他の場所からオブジェクトを作成し、親オブジェクトにメソッドかコンストラクタで渡します
 
-// コンポジション(composition): 集約の特殊なタイプで、集約されるオブジェクト(Walletオブジェクト)が集約するオブジェクト(Personオブジェクト)に対して依存性を持つ
-// コンポジションでは、所有者が完全な支配権を持つため、集約先のオブジェクトはそれ自体で存在することはできない
-// e.g. PersonとWallet classの間にcompositionが適用されている場合は、Personオブジェクトが削除されるとWalletオブジェクトも削除される
+// しかし、あるPersonが削除されると、その人特有のBMIやNameは、他のPersonオブジェクトによって所有されることはできない(Composition)
+// Composition: Personが消滅されるとBMI, Nameが他のスコープに存在し続けることができない場合
+// Compositionの多くの場合、コンストラクタのところでその新しいオブジェクトが作成され、private変数にします
 
 class Wallet{
     private int bill1;

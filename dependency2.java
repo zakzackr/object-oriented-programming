@@ -46,7 +46,7 @@ class Monster{
     private int defense;
     // Monsterの身長をMeter->cmに変更する
     // private double heightM = 3;
-    private double heightM = 300;
+    private double heightCm = 300;
 
     public Monster(String monster, int health, int attack, int defense){
         this.monster = monster;
@@ -60,7 +60,7 @@ class Monster{
     }
 
     public double getHeight(){
-        return this.heightM;
+        return this.heightCm;
     }
 
     public int getAttack(){
@@ -82,7 +82,7 @@ class Monster{
         System.out.println("health: " + health);
         System.out.println("attack: " + attack);
         System.out.println("defense: " + defense);
-        System.out.println("heightM: " + heightM);
+        System.out.println("heightCm: " + heightCm);
     }
 }
 

@@ -1,3 +1,4 @@
+// association > aggregation (weak Association) > composition (strong Association)
 // Wallet, AddressはあるPersonオブジェクトが削除されても、他のPersonオブジェクトによって所有されることができる（集約）
 // 集約: Personが消滅されてもWalletが他のスコープに存在し続けることができる場合
 // 集約の場合は別の他の場所からオブジェクトを作成し、親オブジェクトにメソッドかコンストラクタで渡します

@@ -25,6 +25,7 @@ class Player{
         System.out.println(username + " attacks " + monster.getName());
 
         // e.g. Monsterの身長がmeterからcmに変わった場合、常に下のif条件がtrueになり、Monsterに攻撃しても無効になる
+        // ref: https://github.com/zakzackr/OOP/blob/main/dependency2.java
         if (monster.getHeight() >= heightM * 3 || monster.getDefense() >= attack) return;
         monster.attacked(attack - monster.getDefense());
     }

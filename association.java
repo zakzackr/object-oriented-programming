@@ -100,7 +100,7 @@ class Person{
     private int age;
     private double heightM;
     private double weightKg;
-    private Wallet wallet;
+    private Wallet wallet;  // unidirectional association
     private static String denomination = "highestFirst";
 
     public Person(String firstName, String lastName, int age, double heightM, double weightKg){

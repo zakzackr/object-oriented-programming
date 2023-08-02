@@ -42,6 +42,11 @@ class Animal{
         hungerPercent = 0;
     }
 
+    public void move(){
+        if(!this.isAlive()) return;
+        System.out.println("This animal just moved...");
+    }
+
     public void setAsHungry(){
         if (!isAlive()) return;
         hungerPercent = 100;

@@ -7,6 +7,10 @@ abstract class Shape2D{
     protected String backgroundColor = "white";
     protected Date createdTime;
 
+    public void test(){
+        System.out.println("suiiiii");
+    }
+
     public Shape2D(){
         this.createdTime = new Date();
     }
@@ -125,8 +129,20 @@ class Main{
         Rectangle rectangle = new Rectangle(2, 4);
         Circle circle = new Circle(2);
 
+        // error: Shape2D classはインスタンス化できない
+        // Shape2D shape2dObj = new Shape2D();
+
+        // Shape2Dは抽象クラスで直接インスタンス化できないため、ポリモーフィズムを適用
+        Shape2D polySquare = new Square(3);
+        Shape2D polyRectangle = new Rectangle(3, 6);
+        Shape2D polyCircle = new Circle(3);
+
         printShape(square);
         printShape(rectangle);
         printShape(circle);
+
+        printShape(polySquare);
+        printShape(polyRectangle);
+        printShape(polyCircle);
     }
 }

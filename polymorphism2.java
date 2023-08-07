@@ -17,6 +17,10 @@ class Dog extends Animal {
 }
 
 class Main {
+    public static void printEat(Animal animal){
+        animal.animalEat();
+    }
+
     public static void main(String[] args) {
         Animal animal = new Animal();  // Create a Animal object
         // polymorphism (run-time polymorphism)
@@ -27,5 +31,10 @@ class Main {
         animal.animalEat();
         cat.animalEat();
         dog.animalEat();
+
+        System.out.println("Checking the printEat function...");
+        printEat(animal);
+        printEat(cat);
+        printEat(dog);
     }
 }

@@ -1,0 +1,129 @@
+interface Audible{
+    public abstract void makeNoise();
+    public abstract double soundFrequency();
+    public abstract double soundLevel();
+}
+
+interface Edible{
+    public abstract String howToPrepare();
+    public abstract double calories(); 
+}
+
+class Name{
+    private String firstName;
+    private String lastName;
+
+    public Name(String firstName, String lastName){
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public String getFullName(){
+        return firstName + " " + lastName;
+    }
+}
+
+class Person implements Audible{
+    private Name name;
+    private double weightKg;
+    private double heightM;
+    private int age;
+
+    public Person(String firstName, String lastName, double weightKg, double heightM, int age){
+        this.name = new Name(firstName, lastName);
+        this.weightKg = weightKg;
+        this.heightM = heightM;
+        this.age = age;
+    }
+
+    public String toString(){
+        return name.getFullName() + ", heightM: " + heightM + ", weightKg: " + weightKg + ", age: " + age;
+    }
+
+    public void personSing(){
+        System.out.println("I am singing~~hahaha~~");
+    }
+
+    public void makeNoise(){
+        System.out.println("Hello World!!");
+    }
+
+    public double soundFrequency(){
+        return age > 18? 120: 100;
+    }
+
+    public double soundLevel(){
+        return age > 18? 60: 65;
+    }
+}
+
+class Cow implements Audible, Edible{
+    private double weightKg;
+    private int age;
+    private double soundFrequency = 130;
+    private double soundDecibels = 70;
+
+    public Cow(double weightKg, int age){
+        this.weightKg = weightKg;
+        this.age = age;
+    }
+
+    public String toString(){
+        return "This cow is " + age + " year old and weights " + weightKg + "kg.";
+    }
+
+    public void makeNoise(){
+        System.out.println("Moooooo");
+    }
+
+    public double soundFrequency(){
+        return this.soundFrequency;
+    }
+
+    public double soundLevel(){
+        return this.soundDecibels;
+    }
+
+    public String howToPrepare(){
+        return "Cut the cow with a butchering knife into even pieces, and grill each piece at 220C";
+    }
+
+    public double calories(){
+        return weightKg * 1850;
+    }
+}
+
+class Main{
+    public static void personInteractsWithObject(Person p, Audible audible){
+        System.out.println(p + " is interacting with " + audible);
+        audible.makeNoise();
+        System.out.println(audible.soundFrequency());
+        System.out.println(audible.soundLevel());
+        System.out.println();
+    }
+
+    public static void personEatsObject(Person p, Edible edible){
+        System.out.println(p + " is preparing a meal as follows: " + edible.howToPrepare());
+        System.out.println(p + " has just had " + edible + " and consumed " + edible.calories() + " calories");
+        System.out.println();
+    }
+
+    public static void main(String[] args){
+        Person p1 = new Person("John", "Yates", 75, 181, 25);
+        Person p2 = new Person("Amy", "Thomas", 48, 170, 17);
+        personInteractsWithObject(p1, p2);
+        personInteractsWithObject(p2, p1);
+
+        Audible p3 = new Person("Peter", "Stones", 189, 90, 30);
+        personInteractsWithObject(p1, p3);
+        // personInteractsWithObject(p3, p1);  // error
+
+        Cow cow1 = new Cow(181, 20);
+        personInteractsWithObject(p1, cow1);
+        personEatsObject(p1, cow1);
+
+        Edible cow2 = new Cow(123, 6);
+        // personInteractsWithObject(p1, cow2);  // error
+        personEatsObject(p1, cow2);
+    }   
+}

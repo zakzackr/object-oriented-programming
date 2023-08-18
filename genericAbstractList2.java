@@ -20,8 +20,8 @@ interface Deque<E> extends Stack<E>, Queue<E>{
 abstract class GenericAbstractList<E> implements Deque<E>{
     protected E[] initialList;
 
-    public GenericAbstractList(){};
-
+    public GenericAbstractList(){};  
+    
     public GenericAbstractList(E[] arr){
         this.initialList = arr;
     }
@@ -148,22 +148,213 @@ class GenericArrayList<E> extends GenericAbstractList<E>{
     }
 }
 
+class Node<E>{
+    public E data;
+    public Node<E> next;
+    public Node<E> prev;
+
+    public Node(E data){
+        this.data = data;
+    }
+}
+
+class GenericLinkedList<E> extends GenericAbstractList<E>{
+    private Node<E> head;
+    private Node<E> tail;
+
+    public GenericLinkedList(){
+        super();
+    }
+
+    public E peekFront(){
+        if (head == null) return null;
+        return head.data;
+    }
+
+    public E popFront(){
+        if (head == null) return null;
+        Node<E> temp = head;
+        head = head.next;
+        if (head == null) tail = null;
+        else head.prev = null;
+
+        return temp.data;
+    }
+
+    public E peekBack(){
+        if (tail == null) return null;
+        return tail.data;
+    }
+
+    public E popBack(){
+        if (tail == null) return null;
+        Node<E> temp = tail;
+        tail = tail.prev;
+        if (tail == null) head = null;
+        else tail.next = null;
+
+        return temp.data;
+    }
+    
+    public void pushFront(E element){
+        Node<E> newNode = new Node<E>(element) ;
+        if (head == null){
+            head = newNode;
+            tail = head;
+        } else {
+            head.prev = newNode;
+            newNode.next = head;
+            // newNode.prev = null;
+            head = newNode;
+        }
+    }
+
+    public void pushBack(E element){
+        Node<E> newNode = new Node<E>(element);
+        if (tail == null){
+            tail = newNode;
+            head = tail;
+        } else {
+            tail.next = newNode;
+            newNode.prev = tail;
+            // newNode.next = null;
+            tail = newNode;
+        }
+    }
+
+    public Node<E> at(int index){
+        if (index < 0 || head == null) return null;
+        Node<E> iterator = head;
+        for (int i = 0; i < index; i++){
+            iterator = iterator.next;
+            if (iterator == null) return null;
+        }
+
+        return iterator;
+    }
+
+    public E get(int index){
+        if (at(index) == null) return null;
+        else return at(index).data;
+    }  
+
+    public void add(E element){
+        pushBack(element);
+    }
+
+    public void add(E[] elements){
+        for (E elem: elements) pushBack(elem);
+    }
+
+    public E pop(){
+        return popBack();
+    }
+
+    public void addAt(int index, E element){
+        if (index < 0) return;
+        else if (index == 0) pushFront(element);
+        else if (at(index - 1) == tail){
+            pushBack(element);
+        }
+        else {
+            Node<E> target = at(index - 1);
+            Node<E> temp = target.next;
+            Node<E> newNode= new Node<E>(element);
+            target.next = newNode;
+            newNode.prev = target;
+            newNode.next = temp;
+            temp.prev = newNode;
+        }
+    }
+
+    public void addAt(int index, E[] elements){
+        if (index < 0) return;
+        for (int i = elements.length - 1; i >= 0; i--){
+            addAt(index, elements[i]);
+        }
+    }
+
+    public E removeAt(int index){
+        Node<E> deleted = at(index);
+        if (deleted == null) return null;
+        else if (deleted == head) popFront();
+        else if (deleted == tail) popBack();
+        else {
+            deleted.prev.next = deleted.next;
+            deleted.next.prev = deleted.prev;
+        }
+
+        return deleted.data;
+    }
+
+    public void removeAllAt(int start){
+        Node<E> startNode = at(start);
+        if (startNode != null){
+            tail = startNode.prev;
+            if (tail != null) tail.next = null;
+            else head = tail;
+        }
+    }
+
+    public void removeAllAt(int start, int end){
+        Node<E> startNode = at(start);
+        Node<E> endNode = at(end);
+
+        if (startNode == null) return;
+        else if (endNode == null) removeAllAt(start);
+        else {
+            startNode.prev.next = endNode;
+            endNode.prev = startNode.prev;
+        }
+    }
+
+    public GenericAbstractList<E> subList(int start){
+        GenericAbstractList<E> list = new GenericLinkedList<E>();
+        Node<E> startNode = at(start);
+        while (startNode != null){
+            list.pushBack(startNode.data);
+            startNode = startNode.next;
+        }
+
+        return list;
+    }
+
+    public GenericAbstractList<E> subList(int start, int end){
+        GenericAbstractList<E> list = new GenericLinkedList<E>();
+        Node<E> startNode = at(start);
+        Node<E> endNode = at(end);
+        while (startNode != null && startNode != endNode){
+            list.pushBack(startNode.data);
+            startNode = startNode.next;
+        }
+
+        return list;
+    }
+
+    public String toString(){
+        StringBuilder str = new StringBuilder("[");
+        Node<E> iterator = head;
+        while (iterator != null){
+            str.append(iterator.data + " ");
+            iterator = iterator.next;
+        }
+
+        str.append("]");
+        return str.toString();
+    }
+}
+
 class Main{
     public static void main(String[] args){
-        GenericArrayList<Integer> arrList = new GenericArrayList<Integer>(new Integer[]{1, 2, 3, 4, 5});
+        GenericAbstractList<Integer> arrList = new GenericArrayList<Integer>(new Integer[]{1, 2, 3, 4, 5});
         System.out.println(arrList);
-        System.out.println(arrList.subList(3));
 
-        GenericArrayList<String> arrList2 = new GenericArrayList<String>(new String[]{"apple", "banana", "cherry", "dragon fruit"});
-        System.out.println(arrList2);
-        arrList2.removeAllAt(1, 3);
-        System.out.println(arrList2);
-        arrList2.addAt(1, new String[]{"pineapple", "peach"});
-        System.out.println(arrList2);
-        System.out.println(arrList2.popBack());
-        System.out.println(arrList2);
-        arrList2.pushFront("melon");
-        arrList2.pushBack("water melon");
-        System.out.println(arrList2);
+        GenericAbstractList<Integer> linkedList = new GenericLinkedList<Integer>();
+        System.out.println(linkedList);
+        linkedList.add(new Integer[]{10, 20, 30, 40, 50});
+        System.out.println(linkedList);
+        linkedList.removeAllAt(1, 3);
+        System.out.println(linkedList);
+        System.out.println(linkedList.pop());
     }
 }
